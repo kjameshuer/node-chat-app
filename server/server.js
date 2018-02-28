@@ -12,13 +12,25 @@ var io = socketIO(server);
 app.use(express.static(publicPath))
 
 io.on('connection',(socket) =>{
-    console.log("new user connected")
+    console.log("ive connected with someone")
 
-    socket.on('disconnect',()=>{
-        console.log('client disconnected')
+    socket
+    .on('disconnect',()=>{
+     //   console.log('client disconnected')
     })
+    .on('createMessage', (data) => {
+        const message =  {
+            ...data,
+            createdAt:new Date().getTime
+        };
+
+        io.emit('newMessage', message)
+    })
+
+  
+
 })
 
 server.listen(port, () => {
-    console.log(`server is listening on port ${port}`)
+    console.log(`waiting for connections on port ${port}`)
 });
