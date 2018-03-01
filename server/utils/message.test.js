@@ -16,11 +16,6 @@ describe('generateMessage', () => {
             text
         })
 
-        //store response in variable
-        // assert that from is correct
-        //asser from matches value passed in
-        // asster text matches
-        // create at is a number
     })
 
 })

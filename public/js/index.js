@@ -1,14 +1,35 @@
+(function ($, window) {
 
     var socket = io();
-    socket.on('connect',function(){
-       
-      console.log('Ive connected')
+
+    var inputField = $('[name=message]');
+    var list = $('#message-list')
+
+    socket.on('connect', function () {
+
+ 
+    })
+        .on('disconnect', () => {
+            //    console.log('disconnected from server')
+        })
+        .on('newMessage', (data) => {
+
+            inputField.val('');
+            list.append($('<li/>').text(`${data.from}: ${data.text}`));
+
+        });
+
+
+    $('#message-form').on('submit',function(e){
+        e.preventDefault();
+
+        socket.emit('createMessage',{
+            from: 'anon',
+            text: inputField.val()
+        },function(){
+      
+        });
 
     })
-    .on('disconnect',()=>{
-    //    console.log('disconnected from server')
-    })
-    .on('newMessage',(data) => {
-        console.log('newMessage: ', data)
-    
-    });
+
+})(jQuery, window);
