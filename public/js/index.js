@@ -14,7 +14,7 @@
         })
         .on('newMessage', (data) => {
 
-            inputField.val('');
+           
             list.append($('<li/>').text(`${data.from}: ${data.text}`));
 
         });
@@ -27,7 +27,7 @@
             from: 'anon',
             text: inputField.val()
         },function(){
-      
+            inputField.val('');
         });
 
     })
