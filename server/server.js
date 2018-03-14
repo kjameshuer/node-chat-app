@@ -3,6 +3,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const express = require('express');
 const { generateMessage, generateLocationMessage } = require('./utils/message');
+const { isRealString } = require('./utils/validation');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 const app = express();
@@ -16,7 +17,13 @@ io.on('connection', (socket) => {
 
     socket.emit('newMessage', generateMessage('admin', 'Welcome to the chat app'));
 
+    socket.on('join',(data,callback)=>{
+        if (!isRealString(data.name) || !isRealString(data.room) ) {
+            callback('Name and room name are required')
+        }
 
+        callback();
+    })
 
     socket.on('createMessage', (data, callback) => {
         const message = generateMessage(data.from, data.text);
@@ -28,6 +35,8 @@ io.on('connection', (socket) => {
         console.log('sending coords')
         io.emit('newLocationMessage', generateLocationMessage(coords.from, coords.latitude, coords.longitude))
     })
+
+
 
     socket.on('disconnect', () => {
         console.log('client disconnected')

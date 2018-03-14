@@ -3,11 +3,20 @@
     var socket = io();
 
     var inputField = $('[name=message]');
-    var list = window.list = $('#message-list');
+    var list = $('#message-list');
     var locationButton = $('#send-location');
 
     socket.on('connect', function () {
+        var params = $.deparam(window.location.search);
 
+        socket.emit('join', params, function (err) {
+            if (err) {
+                alert('Need valid name and name room')
+                window.location.href = '/';
+            } else {
+                console.log('no error')
+            }
+        })
 
     })
         .on('disconnect', () => {
@@ -15,29 +24,29 @@
         })
         .on('newMessage', (data) => {
 
-             var formattedTime = moment(data.createdAt).format('h:mm a');
+            var formattedTime = moment(data.createdAt).format('h:mm a');
 
-             var isScrolledToBottom = userIsScrolledToBottom();
+            var isScrolledToBottom = userIsScrolledToBottom();
 
-            $.get('templates/message-template.mst',function(template){
-                var rendered = Mustache.render(template,{
-                    text:data.text,
-                    from:data.from,
+            $.get('templates/message-template.mst', function (template) {
+                var rendered = Mustache.render(template, {
+                    text: data.text,
+                    from: data.from,
                     createdAt: formattedTime
                 })
                 list.append(rendered);
                 if (isScrolledToBottom) scrollToBottom();
-               
+
             });
 
         })
-        .on('newLocationMessage', (data) => {   
+        .on('newLocationMessage', (data) => {
 
-           var formattedTime = moment(data.createdAt).format('h:mm a');    
+            var formattedTime = moment(data.createdAt).format('h:mm a');
 
-            $.get('templates/location-message-template.mst',function(template){
-                var rendered = Mustache.render(template,{
-                    from:data.from,
+            $.get('templates/location-message-template.mst', function (template) {
+                var rendered = Mustache.render(template, {
+                    from: data.from,
                     url: data.url,
                     createdAt: formattedTime
                 })
@@ -58,7 +67,7 @@
     });
 
     locationButton.on('click', function () {
-        $(this).attr('disabled',"disabled").text('fetching..........');
+        $(this).attr('disabled', "disabled").text('fetching..........');
         if (!navigator.geolocation) {
             return alert('Sorry, no geolocation for you');
         }
@@ -75,14 +84,12 @@
         })
     });
 
-    var scrollToBottom = function(){
+    var scrollToBottom = function () {
         var height = list.outerHeight();
-
         list.scrollTop(height);
-             
     }
 
-    var userIsScrolledToBottom = function(){
+    var userIsScrolledToBottom = function () {
         var height = list.outerHeight();
         var scrollTop = list.scrollTop();
         var scrollHeight = list.prop('scrollHeight');
