@@ -46,7 +46,6 @@
 
             $.get('templates/location-message-template.mst', function (template) {
                 var rendered = Mustache.render(template, {
-                    from: data.from,
                     url: data.url,
                     createdAt: formattedTime
                 })
@@ -57,7 +56,7 @@
         .on('updateUserList',function(users){
             var ul = $('<ul/>');
             users.forEach(function(user){
-                console.log(user)
+                
                 ul.append($('<li/>').text(user));
             })
 
@@ -68,8 +67,7 @@
         e.preventDefault();
 
         socket.emit('createMessage', {
-            from: 'anon',
-            text: inputField.val()
+             text: inputField.val()
         }, function () {
             inputField.val('');
         });
