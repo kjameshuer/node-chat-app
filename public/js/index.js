@@ -15,32 +15,34 @@
         })
         .on('newMessage', (data) => {
 
-            const formattedTime = moment(data.createdAt).format('h:mm a');
+            var formattedTime = moment(data.createdAt).format('h:mm a');
+            var template = $('#message-template').html();
+            var html = Mustache.render(template,{
+                text:data.text,
+                from:data.from,
+                createdAt: formattedTime
 
-            const name = $('<div/>').addClass('name').text(`${data.from} ${formattedTime}: `);
+            });
+            list.append(html);
 
-          //  const time = $('<div/>').addClass('time').text(formattedTime);
 
-            const text=$('<div/>').addClass('text').text(data.text)
-
-            const item = $('<li/>').append(name,text);
-
-            list.append(item);
         })
         .on('newLocationMessage', (data) => {   
 
             const formattedTime = moment(data.createdAt).format('h:mm a');
-            
-            const name = $('<div/>').addClass('name').text(`${data.from} ${formattedTime}: `);
+    
 
-       //     const time = $('<div/>').addClass('time').text(formattedTime);
-            
-            const text=$('<div/>').addClass('text').html('<a target="_blank" rel="noopener noreferrer" href='+data.url+'>My Location</a>')
+           var template = $('#location-message-template').html();
 
-           const item = $('<li/>').append(name,text);
+           var html = Mustache.render(template,{
+               from:data.from,
+               url: data.url,
+               createdAt: formattedTime
+
+           })
 
 
-            list.append(item);
+            list.append(html);
         });
 
     $('#message-form').on('submit', function (e) {
