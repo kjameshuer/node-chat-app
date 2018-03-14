@@ -15,34 +15,30 @@
         })
         .on('newMessage', (data) => {
 
-            var formattedTime = moment(data.createdAt).format('h:mm a');
-            var template = $('#message-template').html();
-            var html = Mustache.render(template,{
-                text:data.text,
-                from:data.from,
-                createdAt: formattedTime
-
+             var formattedTime = moment(data.createdAt).format('h:mm a');
+       
+            $.get('templates/message-template.mst',function(template){
+                var rendered = Mustache.render(template,{
+                    text:data.text,
+                    from:data.from,
+                    createdAt: formattedTime
+                })
+                list.append(rendered);
             });
-            list.append(html);
-
 
         })
         .on('newLocationMessage', (data) => {   
 
-            const formattedTime = moment(data.createdAt).format('h:mm a');
-    
+           var formattedTime = moment(data.createdAt).format('h:mm a');    
 
-           var template = $('#location-message-template').html();
-
-           var html = Mustache.render(template,{
-               from:data.from,
-               url: data.url,
-               createdAt: formattedTime
-
-           })
-
-
-            list.append(html);
+            $.get('templates/location-message-template.mst',function(template){
+                var rendered = Mustache.render(template,{
+                    from:data.from,
+                    url: data.url,
+                    createdAt: formattedTime
+                })
+                list.append(rendered);
+            });
         });
 
     $('#message-form').on('submit', function (e) {
@@ -72,6 +68,7 @@
         }, function () {
             alert('unable to fetch location')
         })
-    })
+    });
+
 
 })(jQuery, window);
