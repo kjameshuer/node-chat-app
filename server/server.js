@@ -45,9 +45,9 @@ io.on('connection', (socket) => {
 
     socket.on('createLocationMessage', coords => {
         const user = users.getUser(socket.id);
-
+    
         if (user){
-            io.emit('newLocationMessage', generateLocationMessage(user, coords.latitude, coords.longitude))
+            io.emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude))
 
         }
     })

@@ -46,6 +46,7 @@
 
             $.get('templates/location-message-template.mst', function (template) {
                 var rendered = Mustache.render(template, {
+                    from:data.from,
                     url: data.url,
                     createdAt: formattedTime
                 })
