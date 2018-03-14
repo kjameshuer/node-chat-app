@@ -53,6 +53,15 @@
                 list.append(rendered);
                 scrollToBottom();
             });
+        })
+        .on('updateUserList',function(users){
+            var ul = $('<ul/>');
+            users.forEach(function(user){
+                console.log(user)
+                ul.append($('<li/>').text(user));
+            })
+
+            $('#users').html(ul)
         });
 
     $('#message-form').on('submit', function (e) {
