@@ -3,7 +3,7 @@
     var socket = io();
 
     var inputField = $('[name=message]');
-    var list = $('#message-list');
+    var list = window.list = $('#message-list');
     var locationButton = $('#send-location');
 
     socket.on('connect', function () {
@@ -16,7 +16,9 @@
         .on('newMessage', (data) => {
 
              var formattedTime = moment(data.createdAt).format('h:mm a');
-       
+
+             var isScrolledToBottom = userIsScrolledToBottom();
+
             $.get('templates/message-template.mst',function(template){
                 var rendered = Mustache.render(template,{
                     text:data.text,
@@ -24,6 +26,8 @@
                     createdAt: formattedTime
                 })
                 list.append(rendered);
+                if (isScrolledToBottom) scrollToBottom();
+               
             });
 
         })
@@ -38,6 +42,7 @@
                     createdAt: formattedTime
                 })
                 list.append(rendered);
+                scrollToBottom();
             });
         });
 
@@ -70,5 +75,18 @@
         })
     });
 
+    var scrollToBottom = function(){
+        var height = list.outerHeight();
+
+        list.scrollTop(height);
+             
+    }
+
+    var userIsScrolledToBottom = function(){
+        var height = list.outerHeight();
+        var scrollTop = list.scrollTop();
+        var scrollHeight = list.prop('scrollHeight');
+        return scrollHeight - scrollTop - height < 1;
+    }
 
 })(jQuery, window);
