@@ -18,7 +18,7 @@
         </ul>
         <div class="chat__footer">
             <form id="message-form">
-                <input type="text" name="message" placeholder="type your message" />
+                <input type="text" name="message" autofocus autocomplete="off" placeholder="type your message" />
                 <button type="submit">Send</button>
             </form>
             <button id="send-location">Send Location</button>
@@ -27,6 +27,7 @@
 
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script src="js/libs/jquery.js"></script>
     <script src="/js/index.js"></script>
 

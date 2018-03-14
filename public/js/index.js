@@ -14,15 +14,31 @@
             //    console.log('disconnected from server')
         })
         .on('newMessage', (data) => {
-            list.append($('<li/>').text(`${data.from}: ${data.text}`));
-        })
-        .on('newLocationMessage', (data) => {            
-            var link = $('<a/>')
-                .attr({'href':data.url,'target':'_blank'})
-                .append(`${data.from}'s location`);
 
-            const item = $('<li/>')
-                .append(link);
+            const formattedTime = moment(data.createdAt).format('h:mm a');
+
+            const name = $('<div/>').addClass('name').text(`${data.from} ${formattedTime}: `);
+
+          //  const time = $('<div/>').addClass('time').text(formattedTime);
+
+            const text=$('<div/>').addClass('text').text(data.text)
+
+            const item = $('<li/>').append(name,text);
+
+            list.append(item);
+        })
+        .on('newLocationMessage', (data) => {   
+
+            const formattedTime = moment(data.createdAt).format('h:mm a');
+            
+            const name = $('<div/>').addClass('name').text(`${data.from} ${formattedTime}: `);
+
+       //     const time = $('<div/>').addClass('time').text(formattedTime);
+            
+            const text=$('<div/>').addClass('text').html('<a target="_blank" rel="noopener noreferrer" href='+data.url+'>My Location</a>')
+
+           const item = $('<li/>').append(name,text);
+
 
             list.append(item);
         });
@@ -39,6 +55,7 @@
     });
 
     locationButton.on('click', function () {
+        $(this).attr('disabled',"disabled").text('fetching..........');
         if (!navigator.geolocation) {
             return alert('Sorry, no geolocation for you');
         }
@@ -49,6 +66,7 @@
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
+            locationButton.removeAttr("disabled").text("Send Location");
         }, function () {
             alert('unable to fetch location')
         })

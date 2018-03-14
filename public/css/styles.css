@@ -125,6 +125,31 @@
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
+
+  .chat__messages > li{
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px 0;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .chat__messages li .name{
+      font-weight: bold;
+    width: 10%;
+    min-width: 140px;
+    margin-top: 5px;
+  }
+
+  .chat__messages li .text{
+    width: 70%;
+    min-width: 140px;
+    background: #f1fcff;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
   
   .chat__footer {
     background: #e6eaee;
