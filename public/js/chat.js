@@ -14,7 +14,7 @@
                 alert('Need valid name and name room')
                 window.location.href = '/';
             } else {
-                console.log('no error')
+               
             }
         })
 
@@ -92,7 +92,7 @@
     });
 
     var scrollToBottom = function () {
-        var height = list.outerHeight();
+        var height = list.prop('scrollHeight');
         list.scrollTop(height);
     }
 
